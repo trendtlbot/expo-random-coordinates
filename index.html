@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大阪関西万博 大屋根リング中心3km以内ランダム座標</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        h1 { color: #333; }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        ul { list-style: none; padding: 0; }
+        li { margin: 10px 0; }
+        a { color: #007bff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>大阪関西万博 大屋根リング中心から3km以内のランダム座標</h1>
+    <p>中心: 緯度 34.649195, 経度 135.383317。ボタンで5つの座標を生成し、URLをクリックでGoogle Mapsにピン表示。</p>
+    <button onclick="generateAndDisplay()">5つの座標とMaps URLを生成</button>
+    <div id="output"></div>
+
+    <script>
+        function generateRandomCoordinates() {
+            const centerLat = 34.649195;
+            const centerLng = 135.383317;
+            const radiusDegrees = 0.027; // 3km ≈ 0.027° (1° ≈ 111km)
+            
+            const angle = Math.random() * 2 * Math.PI; // ランダム角度 (ラジアン)
+            const distanceKm = Math.random() * 3; // ランダム距離 (0-3km)
+            const distanceDegrees = distanceKm / 111;
+            
+            const latOffset = distanceDegrees * Math.cos(angle);
+            const lngOffset = distanceDegrees * Math.sin(angle) / Math.cos(centerLat * Math.PI / 180);
+            
+            let latitude = centerLat + latOffset;
+            let longitude = centerLng + lngOffset;
+            
+            // 範囲クランプ
+            latitude = Math.max(34.622195, Math.min(34.676195, latitude));
+            longitude = Math.max(135.356317, Math.min(135.410317, longitude));
+            
+            const lat = latitude.toFixed(6); // 小数点6桁
+            const lng = longitude.toFixed(6);
+            
+            const mapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+            
+            return {
+                latitude: lat,
+                longitude: lng,
+                mapsUrl: mapsUrl
+            };
+        }
+
+        function generateAndDisplay() {
+            const num = 5;
+            let output = '<h2>生成された座標とURL (リング中心3km以内):</h2><ul>';
+            for (let i = 0; i < num; i++) {
+                const coords = generateRandomCoordinates();
+                output += `<li>
+                    座標 ${i+1}: 緯度 ${coords.latitude}, 経度 ${coords.longitude}<br>
+                    <a href="${coords.mapsUrl}" target="_blank">Google Mapsで開く (リング中心3km以内)</a>
+                </li>`;
+            }
+            output += '</ul>';
+            document.getElementById('output').innerHTML = output;
+        }
+    </script>
+</body>
+</html>
