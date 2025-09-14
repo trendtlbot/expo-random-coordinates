@@ -25,18 +25,23 @@
 </head>
 <body>
     <h1>大阪関西万博 大屋根リング中心から3km以内のランダム座標</h1>
-    <p>中心: 緯度 34.649195, 経度 135.383317。ボタンで5つの座標を生成し、URLをクリックでGoogle Mapsにピン表示。</p>
+    <p>中心: 緯度 34.649195, 経度 135.383317。ボタンで5つの座標を生成。iOSならApple Maps、それ以外はGoogle Mapsで開きます。</p>
     <button onclick="generateAndDisplay()">5つの座標とMaps URLを生成</button>
     <div id="output"></div>
 
     <script>
+        // iOSデバイス検出
+        function isIOS() {
+            return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+        }
+
         function generateRandomCoordinates() {
             const centerLat = 34.649195;
             const centerLng = 135.383317;
             const radiusDegrees = 0.027; // 3km ≈ 0.027° (1° ≈ 111km)
             
-            const angle = Math.random() * 2 * Math.PI; // ランダム角度 (ラジアン)
-            const distanceKm = Math.random() * 3; // ランダム距離 (0-3km)
+            const angle = Math.random() * 2 * Math.PI;
+            const distanceKm = Math.random() * 3;
             const distanceDegrees = distanceKm / 111;
             
             const latOffset = distanceDegrees * Math.cos(angle);
@@ -49,15 +54,19 @@
             latitude = Math.max(34.622195, Math.min(34.676195, latitude));
             longitude = Math.max(135.356317, Math.min(135.410317, longitude));
             
-            const lat = latitude.toFixed(6); // 小数点6桁
+            const lat = latitude.toFixed(6);
             const lng = longitude.toFixed(6);
             
-            const mapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+            // iOSならApple Maps、それ以外はGoogle Maps
+            const mapsUrl = isIOS() 
+                ? `maps://?q=${lat},${lng}`
+                : `https://www.google.com/maps?q=${lat},${lng}`;
             
             return {
                 latitude: lat,
                 longitude: lng,
-                mapsUrl: mapsUrl
+                mapsUrl: mapsUrl,
+                mapType: isIOS() ? 'Apple Maps' : 'Google Maps'
             };
         }
 
@@ -68,7 +77,7 @@
                 const coords = generateRandomCoordinates();
                 output += `<li>
                     座標 ${i+1}: 緯度 ${coords.latitude}, 経度 ${coords.longitude}<br>
-                    <a href="${coords.mapsUrl}" target="_blank">Google Mapsで開く (リング中心3km以内)</a>
+                    <a href="${coords.mapsUrl}" target="_blank">${coords.mapType}で開く (リング中心3km以内)</a>
                 </li>`;
             }
             output += '</ul>';
