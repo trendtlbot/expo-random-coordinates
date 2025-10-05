@@ -24,7 +24,7 @@
     </style>
 </head>
 <body>
-    <h1>大阪関西万博 大屋根リング中心から3km以内のランダム座標</h1>
+    <h1>大阪関西万博 大屋根リング中心から1.5km以内のランダム座標</h1>
     <p>中心: 緯度 34.649195, 経度 135.383317。ボタンで5つの座標を生成。iOSならApple Maps、それ以外はGoogle Mapsで開きます。</p>
     <button onclick="generateAndDisplay()">5つの座標とMaps URLを生成</button>
     <div id="output"></div>
@@ -72,7 +72,7 @@
 
         function generateAndDisplay() {
             const num = 5;
-            let output = '<h2>生成された座標とURL (リング中心3km以内):</h2><ul>';
+            let output = '<h2>生成された座標とURL (リング中心1.5km以内):</h2><ul>';
             for (let i = 0; i < num; i++) {
                 const coords = generateRandomCoordinates();
                 output += `<li>
@@ -86,5 +86,6 @@
     </script>
 </body>
 </html>
+
 
 
