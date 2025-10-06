@@ -77,7 +77,7 @@
                 const coords = generateRandomCoordinates();
                 output += `<li>
                     座標 ${i+1}: 緯度 ${coords.latitude}, 経度 ${coords.longitude}<br>
-                    <a href="${coords.mapsUrl}" target="_blank">${coords.mapType}で開く (リング中心3km以内)</a>
+                    <a href="${coords.mapsUrl}" target="_blank">${coords.mapType}で開く (リング中心1.5km以内)</a>
                 </li>`;
             }
             output += '</ul>';
@@ -86,6 +86,7 @@
     </script>
 </body>
 </html>
+
 
 
 
